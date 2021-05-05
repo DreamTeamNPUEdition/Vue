@@ -5,14 +5,18 @@
         <img src="./../assets/logo.png" alt="logo"/>
     </div>
 
-        <div v-if="isAuntific===true" class="autorize">
+        <div v-if="isAuntific===true&&userInf!==null" class="autorize">
             <div class="avatar">
             <img src="../assets/images (1).jpg" alt="avatarMini"/>
             </div>
+            <div class="actions">
+                <button @click="Exit()">exit</button>
+            </div>
             <div class="Name">
                 <!--Тут должен быть роутер линк-->
-                <a href="#">Ender</a>
+                <a href="#">{{userInf.username}}</a>
             </div>
+
 
     </div>
         <div  v-else class="Logining">
@@ -36,23 +40,51 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex";
+    import {mapActions, mapGetters, mapMutations} from "vuex";
 
     export default {
         name: "Header",
         data(){
             return{
                 SearchText:'',
+
             }
         },
         computed:{
             ...mapGetters([
-                'isAunt'
+                'isAunt',
+                'userInfo',
             ]),
             isAuntific(){
                 return this.isAunt;
+            },
+            userInf(){
+                return this.userInfo;
             }
         },
+        methods:{
+            ...mapMutations([
+                'UserInfo',
+                'UserExit'
+
+            ]),
+            ...mapActions([
+                'EXIT_USER'
+            ]),
+            /*GetSelect(e){
+                let value=e.target.value;
+                let options=this.OptionAction.find(o=>o.action==value);
+                this.thisOptionAction=options.action;
+
+            },*/
+            Exit(){
+
+                this.UserExit();
+            }
+        },
+        mounted() {
+            this.UserInfo()
+        }
     }
 </script>
 
@@ -127,5 +159,17 @@
         display: inline-block;
         margin-left: 5px;
         padding-left: 10px;
+    }
+    .actions{
+        display: inline-block;
+        float: right;
+        margin: 10px;
+    }
+
+    .actions select{
+        background: none;
+        border: none;
+        font-size: 20px;
+
     }
 </style>

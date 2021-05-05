@@ -17,13 +17,15 @@
                 </label>
 
             </div>
-            <div class="bt"><button @click="Logining">Login in</button></div>
+            <div class="bt"><button @click="LoginIn">Login in</button></div>
         </div>
     </div>
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from "vuex";
+
+
+    import {mapActions, mapGetters, mapMutations} from "vuex";
 
     export default {
 
@@ -35,24 +37,40 @@
             }
         },
         methods:{
-            ...mapMutations([
-               'logins'
+            ...mapActions([
+                'GET_USERS_DATA',
+                'AUTORIZE_USER',
             ]),
-            Logining(){
-                if(this.Login==this.ThisName) {
-                    this.logins();
-                }
-                console.log(this.ThisName)
+            ...mapMutations([
+                'loginss'
+            ]),
+            LoginIn(){
+                this.getUsers.find(user=>{
+                    if(user.username==this.Login){
+                       this.$store.dispatch('AUTORIZE_USER',user)
+                           .then(()=>this.$router.push('/'))
+                           .catch(err=>console.log(err))
+                        this.loginss();
+
+                    }
+                })
             }
         },
         computed:{
             ...mapGetters([
-                'Names'
+                'GET_Users',
+
             ]),
-            ThisName(){
-                return this.Names;
-            }
+            getUsers(){
+                return this.GET_Users;
+            },
+
+
+        },
+        mounted() {
+            this.GET_USERS_DATA();
         }
+
 
     }
 </script>
