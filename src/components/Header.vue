@@ -7,14 +7,14 @@
 
         <div v-if="isAuntific===true&&userInf!==null" class="autorize">
             <div class="avatar">
-            <img src="../assets/images (1).jpg" alt="avatarMini"/>
+            <router-link to="/UserBlank"><img src="../assets/images (1).jpg" alt="avatarMini"/></router-link>
             </div>
             <div class="actions">
                 <button @click="Exit()">exit</button>
             </div>
             <div class="Name">
                 <!--Тут должен быть роутер линк-->
-                <a href="#">{{userInf.username}}</a>
+                <router-link to="/UserBlank">{{userInf.username}}</router-link>
             </div>
 
 
@@ -33,8 +33,14 @@
                 <input placeholder="Search" v-model="SearchText"/>
             </label>
         </div>
-
-
+        <div v-if="isAuntific===true" class="nav">
+            <ul class="navigation">
+                <li><router-link to="/Home">Home</router-link></li>
+                <li><router-link to="/AllUsers">AllUsers</router-link> </li>
+                <li><router-link to="/UserBlank">MyPage</router-link> </li>
+                <li><router-link to="/AllTeatcher">Викладачі</router-link> </li>
+            </ul>
+        </div>
     </div>
     </div>
 </template>
@@ -80,6 +86,7 @@
             Exit(){
 
                 this.UserExit();
+                this.$router.push('/');
             }
         },
         mounted() {
@@ -172,4 +179,32 @@
         font-size: 20px;
 
     }
+    .navigation li{
+        display:inline-block;
+        margin: 10px;
+        padding: 10px;
+        font-size: 20px;
+        background: #35be00;
+        border-radius: 10px 0 10px 0;
+        list-style-type: none;
+    }
+    .navigation li:hover{
+        display:inline-block;
+        margin: 10px;
+        padding: 10px;
+        font-size: 20px;
+        background: #cbff0e;
+        list-style-type: none;
+    }
+    .navigation a{
+        display: block;
+        text-decoration: none;
+        color: #1effb7;
+    }
+    .navigation a:hover{
+        display: block;
+        text-decoration: none;
+        color: crimson;
+    }
 </style>
+

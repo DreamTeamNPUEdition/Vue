@@ -12,6 +12,7 @@
 
 import Header from "./components/Header";
 import store from "./store/store";
+import {mapActions, mapGetters} from "vuex";
 export default {
   name: 'App',
     store,
@@ -19,8 +20,24 @@ export default {
     Header
 
   },
+    computed:{
+        ...mapGetters([
+            'GET_Users',
+
+        ]),
+    },
+    methods:{
+      ...mapActions([
+          'GetUsersData'
+      ])
+    },
+    mounted() {
+        this.GetUsersData();
+    }
 
 }
+
+
 </script>
 
 <style>

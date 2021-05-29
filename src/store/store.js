@@ -12,6 +12,8 @@ let store=new Vuex.Store({
         users:[],//Массив который через axios должен принимать пользователей
        isAutorize:false,
        User:null,
+       Message:null,
+
 
 
    } ,
@@ -20,7 +22,12 @@ let store=new Vuex.Store({
             state.isAutorize = true;
         },
         SET_USERS: (state, users) => {
-            state.users = users;
+            state.users=users;
+            for(let i=0;i<state.users.length;i++){
+                state.users.push(JSON.parse(state.users[i]));
+            }
+
+
         },
         UserInfo:(state)=>{
             let User=localStorage.getItem('datas');
@@ -38,7 +45,14 @@ let store=new Vuex.Store({
                 state.User = null;
                 state.isAutorize = false;
 
-        }
+        },
+         registerUser:(state,RegisterUserData)=>{
+            state.users.unshift((RegisterUserData))
+
+        },
+
+
+
     }
     ,
     getters:{
@@ -54,25 +68,32 @@ let store=new Vuex.Store({
         }
     },
     actions: {
-        GET_USERS_DATA({commit}){
-            return axios('http://jsonplaceholder.typicode.com/users')
-                .then((users)=>{
-                    commit('SET_USERS',users.data);
-                    return users;
-                })
-                .catch((error)=>{
-                    console.log(error);
-                    return error;
-                })
-        },
-        AUTORIZE_USER({commit},user){
-            localStorage.setItem('datas',JSON.stringify(user));
-            commit('UserInfo',user);
-        },
-        EXIT_USER({commit}){
-            commit('UserExit');
-        }
+        async GetUsersData({commit}){
+            return  await  axios.get('https://localhost:44366/api/users')
+                .then((response=>{
+                    console.log(response.data);
+                    commit('SET_USERS',response.data)
 
+                }))
+                .catch((err)=>{
+                    console.log(err)
+                })
+        },
+
+        async PostUserData({commit},newUser){
+            await axios.post('https://localhost:44366/api/users/posts',newUser,{headers:{
+
+                }})
+                .then((response)=>{
+                    console.log(JSON.stringify(response.data));
+                    commit('registerUser', response.data);
+
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+
+        }
 
    },});
 
